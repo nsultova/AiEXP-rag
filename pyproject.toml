@@ -1,5 +1,5 @@
 [project]
-name = "ai-librarian"
+name = "ai-librarian-env"
 version = "0.1.0"
 description = "A POC RAG tool for personal document management"
 readme = "README.md"

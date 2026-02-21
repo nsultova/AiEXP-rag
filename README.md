@@ -1,7 +1,11 @@
 
 ##### Disclaimer
 
-This is an example proof-of-concept codebase implementing a personal librarian. The repository includes a working state including various excercises to test and to extend further.
+This is a proof-of-concept codebase built for educational purposes. It implements a minimal RAG (Retrieval-Augmented Generation) pipeline in the form of a personal librarian, and is intentionally kept simple to make the internals easy to follow and experiment with.
+The repository includes a working baseline along with exercises designed to help you understand how the pieces fit together — and to break things intentionally so you can learn from it.
+
+
+It is not production-ready. Error handling, security, and scalability are out of scope by design.
 
 ###### Techstack
 * langchain
@@ -88,29 +92,3 @@ Determine if it's your cache that must be cleaned or sth more serious
 navigate to
 `http://127.0.0.1:8080/templates/preview.html`
 
-
-
-#### TODO
-* include `metadata.py`
-* implement metadata extraction -done
-* refine metadata
-* add tagging system
-* ingest multiple formats - partially done
-* try with quicker models - done
-* improve retrieval itself
-* improve UI
-    * Feedback on ingestion
-* build proper design?
-* make actually useful
-* list/show ingested books - done
-* backup database 
-* add multimodality
-* add caching where necessary
-* add pagination(?)
-* Real-time Progress Streaming (Server-Sent Events)
-    * ..if I ever do sthsth-scaling/multi-user/big files
-* queries all metadata from DB directly (no LLM)
-* collects unique chapters per book into a sorted list (no LLM)
-* add summarization of each book to metadata
-* add summarization of chapter to be dispalyed along choice
-* remove redundancy in UI (filters)

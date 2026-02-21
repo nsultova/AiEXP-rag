@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+python-multipart
+jinja2
+chromadb
+langchain-community
+langchain-chroma
+langchain-huggingface
+langchain-ollama
+pypdf
+ebooklib
+bs4
+sentence-transformers
+libsass
+PyPDF2
+httpx

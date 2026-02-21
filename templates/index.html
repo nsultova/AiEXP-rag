@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Private Library</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Josefin+Sans:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="layout">
+
+    <!-- ── Sidebar ─────────────────────────────────────────── -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <span class="sidebar-dot"></span>
+            <div>
+                <div class="sidebar-title">Private Library</div>
+                <div class="sidebar-sub">Personal Reading Intelligence</div>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            {% if library %}
+            <div class="nav-section-label">Collection</div>
+
+            {% for book in library %}
+            <details class="book-entry" {% if prefill_title == book.title %}open{% endif %}>
+                <summary class="book-title">
+                    <span class="book-dot {% if prefill_title == book.title %}book-dot--active{% endif %}"></span>
+                    {{ book.title }}
+                </summary>
+
+                <div class="book-meta">
+                    {% if book.author and book.author != "Unknown" %}
+                    <span class="book-author">{{ book.author }}</span>
+                    {% endif %}
+                    {% if book.page_count %}
+                    <span class="book-pages">{{ book.page_count }}p · {{ book.file_type | upper }}</span>
+                    {% endif %}
+                </div>
+
+                {% if book.chapters %}
+                <div class="nav-section-label nav-section-label--indent">Chapters</div>
+                <ul class="chapter-list">
+                    {% for ch in book.chapters %}
+                    <li>
+                        <a
+                            href="/?prefill_title={{ book.title | urlencode }}&prefill_chapter={{ ch | urlencode }}"
+                            class="chapter-link {% if prefill_chapter == ch and prefill_title == book.title %}chapter-link--active{% endif %}"
+                        >{{ ch }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </details>
+            {% endfor %}
+
+            {% else %}
+            <p class="sidebar-empty">No books ingested yet.</p>
+            {% endif %}
+
+            {% if filter_options.authors or filter_options.titles %}
+            <div class="nav-section-label" style="margin-top: 2rem;">Filter Search
+                {% set active_count = (1 if prefill_title else 0) + (1 if prefill_chapter else 0) %}
+                {% if active_count > 0 %}
+                <span class="filter-badge">{{ active_count }}</span>
+                {% endif %}
+            </div>
+
+            {% if filter_options.authors %}
+            <div class="sidebar-field">
+                <div class="sidebar-field-label">Author</div>
+                <!-- author filter is part of the search form below; label only here -->
+            </div>
+            {% endif %}
+            {% endif %}
+
+        </nav>
+
+        <!-- Upload tucked at bottom of sidebar -->
+        <div class="sidebar-upload">
+            <div class="nav-section-label">Add a Book</div>
+            <form action="/upload" method="post" enctype="multipart/form-data" class="upload-form">
+                <label class="file-label">
+                    <input type="file" name="file" accept=".pdf,.epub" required class="file-input">
+                    <span class="file-btn">Choose file</span>
+                </label>
+                <button type="submit" class="upload-btn">Ingest</button>
+            </form>
+            {% if message %}
+            <p class="upload-message">{{ message }}</p>
+            {% endif %}
+        </div>
+    </aside>
+
+    <!-- ── Main ───────────────────────────────────────────── -->
+    <main class="main">
+
+        <!-- Active context bar -->
+        {% if prefill_title or prefill_chapter %}
+        <div class="context-bar">
+            {% if prefill_title %}
+            <span class="context-tag">
+                <span class="context-tag-label">title</span> {{ prefill_title }}
+                <a href="/" class="context-clear" title="Clear">×</a>
+            </span>
+            {% endif %}
+            {% if prefill_chapter %}
+            <span class="context-tag">
+                <span class="context-tag-label">chapter</span> {{ prefill_chapter }}
+            </span>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <!-- Search form -->
+        <section class="search-section">
+            <form action="/search" method="post" class="search-form">
+
+                <!-- Hidden prefill fields passed through to filter -->
+                <input type="hidden" name="title"   value="{{ prefill_title or '' }}">
+                <input type="hidden" name="chapter" value="{{ prefill_chapter or '' }}">
+
+                <div class="search-row">
+                    <input
+                        type="text"
+                        name="query"
+                        class="search-input"
+                        placeholder="Ask anything about your library…"
+                        value="{{ query or '' }}"
+                        required
+                        autofocus
+                    >
+                    <button type="submit" class="search-btn">Ask</button>
+                </div>
+
+                <!-- Optional author / format overrides (title+chapter come from prefill above) -->
+                {% if filter_options.authors or filter_options.file_types %}
+                <div class="filter-row">
+                    {% if filter_options.authors %}
+                    <div class="filter-field">
+                        <label class="filter-label">Author</label>
+                        <select name="author" class="filter-select">
+                            <option value="all">All authors</option>
+                            {% for a in filter_options.authors %}
+                            <option value="{{ a }}" {% if active_filters and active_filters.get('author') == a %}selected{% endif %}>{{ a }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% endif %}
+                    {% if filter_options.file_types %}
+                    <div class="filter-field">
+                        <label class="filter-label">Format</label>
+                        <select name="file_type" class="filter-select">
+                            <option value="all">All formats</option>
+                            {% for ft in filter_options.file_types %}
+                            <option value="{{ ft }}" {% if active_filters and active_filters.get('file_type') == ft %}selected{% endif %}>{{ ft | upper }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+            </form>
+        </section>
+
+        <!-- Result -->
+        {% if answer %}
+        <section class="result-section">
+            <div class="result-asked">
+                <div class="result-label">You asked</div>
+                <p class="result-query">{{ query }}</p>
+            </div>
+
+            <hr class="result-divider">
+
+            <div class="result-answer">
+                <div class="result-label">Answer</div>
+                <p class="result-text">{{ answer }}</p>
+            </div>
+
+            {% if sources %}
+            <div class="result-sources">
+                <div class="result-label">Sources</div>
+                <ul class="sources-list">
+                    {% for s in sources %}
+                    <li>— <span class="source-item">{{ s }}</span></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            {% if active_filters %}
+            <div class="result-tags">
+                {% for key, val in active_filters.items() %}
+                <span class="filter-tag">{{ key }}: {{ val }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </section>
+        {% endif %}
+
+    </main>
+</div>
+
+</body>
+</html>

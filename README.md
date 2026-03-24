@@ -1,11 +1,10 @@
 
 ##### Disclaimer
 
-This is a proof-of-concept codebase built for educational purposes. It implements a minimal RAG (Retrieval-Augmented Generation) pipeline in the form of a personal librarian, and is intentionally kept simple to make the internals easy to follow and experiment with.
-The repository includes a working baseline along with exercises designed to help you understand how the pieces fit together — and to break things intentionally so you can learn from it.
+This is, for now, a mere proof-of-concept tinkering with RAG building my own personal librarian - a delightful idea for a notorious but equally forgetful bookworm :D
+I want to turn it into sth proper tho, as I could actually use such a tool pretty much.
 
-
-It is not production-ready. Error handling, security, and scalability are out of scope by design.
+It is not production-ready (yet). 
 
 ###### Techstack
 * langchain
@@ -47,19 +46,19 @@ ai-librarian/
 
 #### For Archlinux
 
-The project is managed via uv and comes with a preconfigured pyproject.toml. In your directory, run
+Environments are managed via uv
 
 ```
-uv sync
 source .venv/bin/activate
+uv sync
 ```
 
 **Note:** Install ollama systemwide
 `sudo pacman -S ollama`
 
 * make sure ollama is enabled `sudo systemctl start ollama`
-* grab the model `ollama pull mistral:7b `
-* start Ollama: `ollama run mistral` (or wmistral:7bhichever model you configured)
+* grab the model `ollama pull llama3.2`
+* start Ollama: `ollama run llama3.2` (or whichever model you configured)
 * run the server: `python -m src.app`
 * go to `http://localhost:8000`
 
@@ -93,3 +92,30 @@ Determine if it's your cache that must be cleaned or sth more serious
 navigate to
 `http://127.0.0.1:8080/templates/preview.html`
 
+
+
+#### TODO
+* include `metadata.py`
+* implement metadata extraction -done
+* refine metadata
+* add tagging system
+* ingest multiple formats - partially done
+* try with quicker models - done
+* improve retrieval itself
+* improve UI
+    * Feedback on ingestion
+* build proper design?
+* make actually useful
+* list/show ingested books - done
+* backup database 
+* add multimodality
+* add caching where necessary
+* add pagination(?)
+* Real-time Progress Streaming (Server-Sent Events)
+    * ..if I ever do sthsth-scaling/multi-user/big files
+* queries all metadata from DB directly (no LLM)
+* collects unique chapters per book into a sorted list (no LLM)
+* add summarization of each book to metadata
+* add summarization of chapter to be dispalyed along choice
+* remove redundancy in UI (filters)
+* Do reasonable delete fuction for chromaDB entries and/or full db delete

@@ -47,18 +47,19 @@ ai-librarian/
 
 #### For Archlinux
 
+The project is managed via uv and comes with a preconfigured pyproject.toml. In your directory, run
+
 ```
-uv venv ai-librarian-env
-source ./ai-librarian-env/bin/activate
-uv pip install -e .
+uv sync
+source .venv/bin/activate
 ```
 
 **Note:** Install ollama systemwide
 `sudo pacman -S ollama`
 
 * make sure ollama is enabled `sudo systemctl start ollama`
-* grab the model `ollama pull llama3.2`
-* start Ollama: `ollama run llama3.2` (or whichever model you configured)
+* grab the model `ollama pull mistral:7b `
+* start Ollama: `ollama run mistral` (or wmistral:7bhichever model you configured)
 * run the server: `python -m src.app`
 * go to `http://localhost:8000`
 

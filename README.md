@@ -14,7 +14,7 @@ It is not production-ready (yet).
 
 **Models**
 * Embedding: https://huggingface.co/intfloat/e5-small-v2
-* LLM: https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.3
+* LLM: https://huggingface.co/google/gemma-4-E2B
 
 **!!!** If you change the embedding-model you NEED to reingest everything
 

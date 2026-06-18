@@ -19,8 +19,8 @@ def ensure_dirs() -> None:
 # EMBEDDING_MODEL_NAME = "nvidia/llama-embed-nemotron-8b"
 EMBEDDING_MODEL_NAME = "intfloat/e5-small-v2"  # Only 120MB!
 
-# LLM: Mistral 7B via Ollama - balanced performance for local deployment
-LLM_MODEL = "mistral:7b"
+# LLM: Gemma 4 E2B via Ollama - balanced performance for local deployment
+LLM_MODEL = "gemma4:e2b"
 
 # RAG Configuration
 CHUNK_SIZE = 1000

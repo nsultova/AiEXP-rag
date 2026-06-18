@@ -592,7 +592,7 @@ def test_rag():
 
     If Ollama is not running:
         ollama serve
-        ollama pull mistral:7b   (or whichever model is in config.py)
+        ollama pull gemma4:e2b   (or whichever model is in config.py)
     """
     print("=" * 60)
     print("TESTING RAG PIPELINE")

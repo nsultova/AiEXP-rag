@@ -57,8 +57,8 @@ uv sync
 `sudo pacman -S ollama`
 
 * make sure ollama is enabled `sudo systemctl start ollama`
-* grab the model `ollama pull llama3.2`
-* start Ollama: `ollama run llama3.2` (or whichever model you configured)
+* grab the model `ollama pull gemma4:e2b`
+* start Ollama: `ollama run gemma4:e2b` (or whichever model you configured)
 * run the server: `python -m src.app`
 * go to `http://localhost:8000`
 
